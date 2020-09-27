@@ -5,9 +5,19 @@ Can be considered a standalone/Dockerized version of PortSwiggers's Turbo Intrud
 
 ## Usage
 Build the Docker image:
-`docker build . -t yuge:latest`
+```
+docker build . -t yuge:latest
+```
 
-Run:
-`docker run --read-only -v ${PWD}/samples:/root/samples -e TARGET_HOST=localhost -e TARGET_PORT=5000 -e NUMBER_OF_REQUESTS=100 -e REQUEST_FILE=sample.request yuge:latest`
+Run an attack:
+```
+docker run --read-only \
+-v ${PWD}/samples:/root/samples \
+-e TARGET_HOST=localhost \
+-e TARGET_PORT=5000 \
+-e NUMBER_OF_REQUESTS=100 \
+-e REQUEST_FILE=sample.request \
+yuge:latest
+```
 
-The example above sends `100` requests to `localhost:5000` using the contents of `samples/sample.request`.
+The example above sends 100 requests to `localhost:5000` using the contents of `samples/sample.request`.
