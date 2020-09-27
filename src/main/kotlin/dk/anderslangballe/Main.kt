@@ -9,6 +9,7 @@ fun main() {
     val targetHost = System.getenv("TARGET_HOST")
     val targetPort = System.getenv("TARGET_PORT")
     val requestFile = System.getenv("REQUEST_FILE")
+    val numRequests = System.getenv("NUMBER_OF_REQUESTS")
 
     if (targetHost == null || targetPort == null) {
         println("Target host and port must be declared")
@@ -22,9 +23,11 @@ fun main() {
         exitProcess(1)
     }
 
-    val attack = HttpAttack(
-        targetHost, Integer.parseInt(targetPort),
-        getSamplePath(requestFile)
-    )
-    attack.start()
+    if (numRequests == null) {
+        println("Number of requests must be declared")
+
+        exitProcess(1)
+    }
+
+    HttpAttack(targetHost, Integer.parseInt(targetPort), Integer.parseInt(numRequests), getSamplePath(requestFile)).start()
 }

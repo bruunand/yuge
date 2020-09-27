@@ -1,7 +1,9 @@
 package dk.anderslangballe.attack
 
 import dk.anderslangballe.ssl.getSecureSocketFactory
+import java.io.InputStream
 import java.io.OutputStream
+import java.lang.Thread.sleep
 import java.net.Socket
 import java.util.concurrent.CountDownLatch
 
@@ -17,6 +19,7 @@ class HttpRequest(private val targetHost: String, private val targetPort: Int, p
 
         writeInitial(requestBytes, outputStream)
 
+        // Wait for other requests to send initial bytes
         launchLatch.await()
 
         writeFinal(requestBytes, outputStream)
@@ -26,6 +29,7 @@ class HttpRequest(private val targetHost: String, private val targetPort: Int, p
 
     private fun writeFinal(requestBytes: ByteArray, outputStream: OutputStream) {
         outputStream.write(requestBytes, requestBytes.size - 1, withheldBytes)
+        outputStream.flush()
         outputStream.close()
 
         completeLatch.countDown()
